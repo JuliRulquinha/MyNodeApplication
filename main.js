@@ -1,63 +1,5 @@
-// // //Crio um objeto 'triangle'
-// // var triangle = {
-// //     ladoA : 8,
-// //     ladoB : 5,
-// //     ladoC : 17
-// // };
+// Requiring modules
 
-
-// // //Crio uma promise que retorna se o objeto "triangle" e valido
-// // var p = new Promise((resolve, reject) => {
-// //     if(triangle.ladoA + triangle.ladoB < triangle.ladoC){
-// //         reject("Not a valid triangle.");
-// //     }
-// //     else{
-// //         resolve("That is a valid triangle.");
-// //     }
-// //  })//.then((response)=>{
-// // //     console.log(response);
-// // // }).catch((response)=>{
-// // //     console.log(response);
-// // // })
-
-// // //Crio uma function assincrona para tratar resolve || reject
-// // async function myAsyncFunction() {
-// //     try {
-// //         let result = await p;
-// //         console.log(result);
-// //     } catch (error) {
-// //         console.log(error);
-// //     }
-    
-// // }
-// // //Chamo a function
-// // myAsyncFunction();
-
-// // console.log(process);
-
-// const bodyParser = require('body-parser')
-// const express = require('express')
-// const app = express()
-
-// app.use(bodyParser.json());
-
-// app.get('/', function (req, res) {
-//   res.send('Hello World')
-// })
-
-// app.post('/test', function(req, res){
-//     var obj = req.body;
-//     console.log(obj);
-//     var listaDeMensagens = [];
-
-//     for (let i = 0; i < obj.qtd; i++) {
-//         listaDeMensagens.push((i+1)+"-"+obj.message);
-//     }
-//     res.json(listaDeMensagens);
-// })
-
-// app.listen(3000,()=>{
-//     console.log("Waiting for something")})
 
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
@@ -66,6 +8,9 @@ const app = express();
 const utils = require('./utils.js');
 const isValid = require('./isValid.js');
 var fs = require('fs/promises');
+
+
+// Configuring Swagger
 
 const swaggerOptions = {
   swaggerDefinition : {
@@ -84,7 +29,7 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 
-
+// Defining the port we will be listening on
 app.listen(5500);
 
 
@@ -117,7 +62,7 @@ app.listen(5500);
  *       404:
  *         description: Contato não encontrado
  */
-app.get('/contacts/:name',(req, res)=>{
+app.get('/contacts/:name',(req, res)=>{ //Retrives a specific contact or a list of contacts that start with a letter or string
   let name = req.params.name;
   let contact = contacts.filter(c => c.FirstName.startsWith(name)).sort((a, b) => a.FirstName.localeCompare(b.FirstName));
 
@@ -149,14 +94,14 @@ app.get('/contacts/:name',(req, res)=>{
  *       404:
  *         description: Contato não encontrado
  */
-app.get('/contacts',(req, res) => {
+app.get('/contacts',(req, res) => {   // Retrieves all contacts from the file
   res.send(contacts.sort((a, b) => a.FirstName.localeCompare(b.FirstName)));
 
 });
 
 app.use(express.json());
 
-app.post('/save/contact',(req, res) => {
+app.post('/save/contact',(req, res) => {  // Saves a contact from body if all the properties have values
   const data = req.body;
   let props = [];
   for(d in data){
@@ -175,6 +120,8 @@ app.post('/save/contact',(req, res) => {
   fs.appendFile("contact_information.csv",contactToSave);
 })
 
+
+// Transforms the information from the file into an array of objects
 let contacts = [];
 var result = utils.readFromCsv("contact_information.csv");
 
@@ -186,9 +133,6 @@ result.then((data)=>{
 
   props = props.map(p => p.replace(' ',''));
 
-  
-  
-  //Preciso pegar os valores guardados em prop
   
 
   for(let i = 1; i <lines.length ; i++){ 
@@ -210,26 +154,4 @@ result.then((data)=>{
 )
 
 
-
-// for(let i = 0; i<1; i++){
-  
-//   console.log("estou na linha "+i)
-//   for(let j = 0; j<3; j++){
-//     console.log("estou na coluna "+j);
-//   }
-
-// }
-
-// let numbers1 = [2,3,1,4];
-// let numbers2 = [2,2,5,3];
-// let numbers3 = [];
-// for(let i= 0; i<numbers1.length;i++){
-//   numbers3[i] = numbers1[i]+numbers2[i];
-// }
-
-// for(let i = 0; i<numbers1.length; i++){
-//   numbers3[i]= numbers1[i]*2;
-// }
-
-// console.log(numbers3);
 
