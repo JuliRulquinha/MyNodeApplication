@@ -9,6 +9,14 @@ const utils = require('./utils.js');
 const isValid = require('./isValid.js');
 var fs = require('fs/promises');
 
+// Requiring an event emitter
+
+const EventEmitter = require("node:events");
+const eventEmitter = new EventEmitter();
+
+eventEmitter.on("save",()=>{
+  console.log("Contact saved");
+})
 
 // Configuring Swagger
 
@@ -111,6 +119,7 @@ app.post('/save/contact',(req, res) => {  // Saves a contact from body if all th
   let contactToSave = props.join(",");
   if (isValid(data) === true) {
     console.log("Dados recebidos:", data);
+    eventEmitter.emit("save");
     res.status(200).send("Dados válidos e salvos com sucesso.");
   } else {
     console.error("Dados inválidos.");
