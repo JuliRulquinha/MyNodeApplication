@@ -1,13 +1,23 @@
 // Requiring modules
 
 
-const express = require('express');
-const swaggerUi = require('swagger-ui-express');
-const swaggerJsDoc = require('swagger-jsdoc');
-const app = express();
-const utils = require('./utils.js');
-const isValid = require('./isValid.js');
-var fs = require('fs/promises');
+// const express = require('express');
+// const swaggerUi = require('swagger-ui-express');
+// const swaggerJsDoc = require('swagger-jsdoc');
+// const app = express();
+// const utils = require('./utils.js');
+// const isValid = require('./isValid.js');
+// const test = require("./test");
+
+import express from "express";
+express();
+
+import swaggerUi from "swagger-ui-express";
+import swaggerJSDoc from "swagger-jsdoc";
+import isValid from "./isValid.js";
+import utils from "./utils.js";
+
+swaggerJSDoc();
 
 // Requiring an event emitter
 
@@ -162,5 +172,4 @@ result.then((data)=>{
   }
 )
 
-
-
+console.log(utils.readFromCsv);
